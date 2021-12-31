@@ -67,7 +67,7 @@ def apply_modifiers(obj):
 # Calls the menu when the script is ran
 class COM3D2GroupConverter(bpy.types.Panel):
     bl_space_type = 'VIEW_3D'
-    bisLeftorRightUsedegion_type = 'UI'
+    bl_region_type = 'UI'
     bl_category = "Misc"  # not used in blender 2.80
     bl_context = "objectmode"
     bl_label = "COM3D2 Group Converter"
