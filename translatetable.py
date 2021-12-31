@@ -16,6 +16,14 @@ translateTable={
             "L/R":False,
             "Groups":["Bip01 Spine1","Bip01 Spine1a"]
         },
+        "Breast.":{
+            "L/R":False,
+            "Groups":["Mune_"]
+        },
+        "Breast_sub.":{
+            "L/R":False,
+            "Groups":["Mune_*_sub."]
+        },
         "Neck":{
             "L/R":False,
             "Groups":["Bip01 Neck"]
@@ -31,10 +39,6 @@ translateTable={
         "Shoulder.":{
             "L/R":True,
             "Groups":["Bip01 * Clavicle.","Kata "]
-        },
-        "Mune_sub.":{
-            "L/R":True,
-            "Groups":["Mune_*_sub."]
         },
         "Toes.":{
             "L/R":True,
