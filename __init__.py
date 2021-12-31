@@ -67,7 +67,7 @@ def apply_modifiers(obj):
 # Calls the menu when the script is ran
 class COM3D2GroupConverter(bpy.types.Panel):
     bl_space_type = 'VIEW_3D'
-    bl_region_type = 'UI'
+    bisLeftorRightUsedegion_type = 'UI'
     bl_category = "Misc"  # not used in blender 2.80
     bl_context = "objectmode"
     bl_label = "COM3D2 Group Converter"
@@ -105,23 +105,27 @@ def translateVertexGroups(context,props):
                     item.vertex_groups.remove(item.vertex_groups[key])
                 item.vertex_groups.new(name=key)
             Nogroups = True
+            isLeftorRightUsed = [True,True]
             for group in value["Groups"]:
                 if value["L/R"]:
-                    if item.vertex_groups.find(group+"L") == -1 or item.vertex_groups.find(group+"R") == -1:
+                    if item.vertex_groups.find(group+"L") == -1 and item.vertex_groups.find(group+"R") == -1:
                         continue
-                    mod1 = item.modifiers.new(key+"L+"+group+"L",type="VERTEX_WEIGHT_MIX")
-                    mod2 = item.modifiers.new(key+"R+"+group+"R",type="VERTEX_WEIGHT_MIX")
-                    
-                    mod1.mix_mode='ADD'
-                    mod1.mix_set='ALL'
-                    mod1.vertex_group_a=key+"L"
-                    mod1.vertex_group_b=group+"L"
-                    mod1.show_expanded = False
-                    mod2.mix_mode='ADD'
-                    mod2.mix_set='ALL'
-                    mod2.vertex_group_a=key+"R"
-                    mod2.vertex_group_b=group+"R"
-                    mod2.show_expanded = False
+                    if item.vertex_groups.find(group+"L") != -1:
+                        mod1 = item.modifiers.new(key+"L+"+group+"L",type="VERTEX_WEIGHT_MIX")
+                        mod1.mix_mode='ADD'
+                        mod1.mix_set='ALL'
+                        mod1.vertex_group_a=key+"L"
+                        mod1.vertex_group_b=group+"L"
+                        mod1.show_expanded = False
+                        isLeftorRightUsed[0] = False
+                    if item.vertex_groups.find(group+"R") != -1:
+                        mod2 = item.modifiers.new(key+"R+"+group+"R",type="VERTEX_WEIGHT_MIX")
+                        mod2.mix_mode='ADD'
+                        mod2.mix_set='ALL'
+                        mod2.vertex_group_a=key+"R"
+                        mod2.vertex_group_b=group+"R"
+                        mod2.show_expanded = False
+                        isLeftorRightUsed[1]= False
                 else:
                     if item.vertex_groups.find(group) == -1:
                         continue
@@ -134,8 +138,10 @@ def translateVertexGroups(context,props):
                 Nogroups = False
             if Nogroups:
                 if value["L/R"]:
-                        item.vertex_groups.remove(item.vertex_groups[key+"L"])
-                        item.vertex_groups.remove(item.vertex_groups[key+"R"])
+                        if isLeftorRightUsed[0]:
+                            item.vertex_groups.remove(item.vertex_groups[key+"L"])
+                        if isLeftorRightUsed[1]:
+                            item.vertex_groups.remove(item.vertex_groups[key+"R"])
                 else:
                     item.vertex_groups.remove(item.vertex_groups[key])
         if props.applyMods:
