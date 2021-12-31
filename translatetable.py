@@ -17,11 +17,11 @@ translateTable={
             "Groups":["Bip01 Spine1","Bip01 Spine1a"]
         },
         "Breast.":{
-            "L/R":False,
+            "L/R":True,
             "Groups":["Mune_"]
         },
         "Breast_sub.":{
-            "L/R":False,
+            "L/R":True,
             "Groups":["Mune_*_sub."]
         },
         "Neck":{
