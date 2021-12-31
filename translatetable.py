@@ -1,8 +1,12 @@
 import bpy
 translateTable={
-        "Upper Arm.": {
+        "Arm.": {
             "L/R":True,
             "Groups":["Uppertwist_","Uppertwist1_","Bip01 * UpperArm."]
+        },
+        "Elbow.":{
+            "L/R":True,
+            "Groups":["Foretwist_","Foretwist1_","Bip01 * Forearm."]
         },
         "Spine": {
             "L/R":False,
