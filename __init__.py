@@ -3,16 +3,21 @@ bl_info = {
     "author":       "Toys0125",
     "blender":      (2,93,0),
     "version":      (0,1,0),
-    "location":     "Context menu",
+    "location":     "View 3D > Tool Shelf > Misc > COM3D2 group Converter",
     "description":  "Remap vertex groups into simplfied armature",
-    "category":     "Misc > COM3D2 group Converter"
+    "category":     "3D View"
 }
 
+import os
+import sys
 
+# Append files to sys path
+file_dir = os.path.join(os.path.dirname(__file__), 'extern_tools')
+if file_dir not in sys.path:
+    sys.path.append(file_dir)
 
 import bpy
-from .translatetable import TranslateTable
-
+from . import translatetable
 class COM3D2ObjectProperties(bpy.types.PropertyGroup):
     selectedObject : bpy.props.PointerProperty(  # bl 2.80 use testint: bpy.props
         name="selectedObject",
@@ -35,7 +40,11 @@ class ExecuteVertexRemapping(bpy.types.Operator):
 
     # This is the method that is called when the ok button is pressed
     # which is what calls the ApplyModifers() method 
-    def execute(self, context):   
+    def execute(self, context):
+        try:
+            bpy.ops.object.decode_cm3d2_vertex_group_names()
+        except RuntimeError:
+            pass
         translateVertexGroups(context,context.scene.COM3D2objectProperties)
         self.report({'INFO'}, "Remapping done")
         return {'FINISHED'}
@@ -73,8 +82,11 @@ class COM3D2GroupConverter(bpy.types.Panel):
         row= layout.row()
         row.operator('object.execute_vertex_remapping')
 def translateVertexGroups(context,props):
-    translate = TranslateTable()
+    
+    translate = translatetable.translateTable
     selected = context.selected_objects
+    if len(selected) == 0:
+        raise ValueError("No objects selected")
     for item in selected:
         for modifiername,mod in item.modifiers.items():
             if mod.type == 'VERTEX_WEIGHT_MIX':

@@ -1,5 +1,5 @@
-def TranslateTable():
-    return {
+import bpy
+translateTable={
         "Upper Arm.": {
             "L/R":True,
             "Groups":["Uppertwist_","Uppertwist1_","Bip01 * UpperArm."]
@@ -19,6 +19,10 @@ def TranslateTable():
         "Hip":{
             "L/R":False,
             "Groups":["Bip01 Pelvis"]
+        },
+        "Butt.":{
+            "L/R":True,
+            "Groups":["Hip_","Hip_*_nub."]
         },
         "Shoulder.":{
             "L/R":True,
