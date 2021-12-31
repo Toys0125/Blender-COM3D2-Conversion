@@ -8,13 +8,6 @@ bl_info = {
     "category":     "3D View"
 }
 
-import os
-import sys
-
-# Append files to sys path
-file_dir = os.path.join(os.path.dirname(__file__), 'extern_tools')
-if file_dir not in sys.path:
-    sys.path.append(file_dir)
 
 import bpy
 from . import translatetable
@@ -138,12 +131,16 @@ def translateVertexGroups(context,props):
                 Nogroups = False
             if Nogroups:
                 if value["L/R"]:
+                            item.vertex_groups.remove(item.vertex_groups[key+"L"])
+                            item.vertex_groups.remove(item.vertex_groups[key+"R"])
+                else:
+                    item.vertex_groups.remove(item.vertex_groups[key])
+            else:
+                if value["L/R"]:
                         if isLeftorRightUsed[0]:
                             item.vertex_groups.remove(item.vertex_groups[key+"L"])
                         if isLeftorRightUsed[1]:
                             item.vertex_groups.remove(item.vertex_groups[key+"R"])
-                else:
-                    item.vertex_groups.remove(item.vertex_groups[key])
         if props.applyMods:
             apply_modifiers(item)
 
